@@ -1,4 +1,5 @@
 The sript run_analysis.R performs the following steps:
+
 ##Step 1. Merging train and test data into one file
 Files with data to be used are dowloaded and unziped.  
 Data from the files is read and new variables to be used are created:
