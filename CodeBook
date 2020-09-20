@@ -1,1 +1,41 @@
+The sript run_analysis.R performs the following steps:
+##Step 1. Merging train and test data into one file
+Files with data to be used are dowloaded and unziped.  
+Data from the files is read and new variables to be used are created:
+- features from "features.txt". 561 rows and 2 columns  
+- subject_train from "subject_train.txt". 7352 rows, 1 column  
+- y_train from "y_train.txt". 7352 rows, 1 column  
+- X_train from" X_train.txt". 7352 rows, 561 columns  
+- data_train created merging subject_train, y_train and X_tain using cbind function. 7352 rows, 563 columns  
+- subject_test from "subject_test.txt". 2947 rows, 1 column  
+- y_test from "y_test.txt". 2947 rows, 1 column   
+- X_test from "X_test.txt". 2947 rows, 561 column  
+- data_test created merging subject_test, y_test and Xtes using cbind function. 2947 rows, 563 columns  
+- full_data created merging data_train and data_test together using a rbind function. 10299 rows, 563 columns  
 
+##Step 2. Extracting the measurements on the mean and standard deviation for each measurement
+dplyr library and select function was used to select all columns that have subjectID, activityID, or contains words "mean" or "std".
+A data_MeanAndSTD was created. 10299 rows, 88 columns
+
+##Step 3. Adding descriptive activity names to the activities in the data set
+A variable activity_labels from "activity_labels.txt" was created (6 rows, 2 columns). Column names "activityID", "activityLabel" were assigned.
+Data from data_MeanAndSTD and activity_labels was merged by column "activityID" using merged function. 
+A data_withActivity was created. 10299 rows, 89 columns
+The columns were rearranged so that subjectID goes first, followed by activityID, activityLabel and all measures. Subset with select functions were used.
+
+##Step 4. Labeling the data set with descriptive variable names
+gsub function was used to change elements of column titles:
+- All start with character t replaced with Time  
+- All start with character f replaced with Frequency  
+- Acc replaced with Accelerometer  
+- angle replaced with Angle  
+- BodyBody replaced with Body  
+- gravity replaced with Gravity  
+- Gyro replaced with Gyroscope  
+- Mag replaced with Magnitude  
+A data_NewNames was created. 10299 rows, 89 columns
+
+##Step 5. Creating a new data set with the average of each variable for each activity and each subject
+activityID column was removed, data_NewNames was groupd by subject and activity, means of each variable for each subject and activity was calculated.
+A NewData was created. 180 rows, 88 columns.
+"NewData.txt" was created from NewData using write.table function.
